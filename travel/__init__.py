@@ -7,10 +7,14 @@ db = SQLAlchemy()
 
 
 def create_app():
+
+
     app = Flask(__name__)
     app.debug = True
     app.secret_key = 'somethingsecret'
-
+    #c config the image upload
+    UPLOAD_FOLDER = '/static/image'
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     # config the db
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///travel_data.sqlite'
     # initialise

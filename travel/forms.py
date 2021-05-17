@@ -3,8 +3,10 @@ from travel import create_app
 from flask_wtf import FlaskForm
 from wtforms.fields import TextAreaField,SubmitField, StringField, PasswordField
 from wtforms.validators import InputRequired, Length, Email, EqualTo
+from flask_wtf.file import FileRequired, FileField, FileAllowed
 
 
+ALLOWED_FILE = {'png', 'jpg', 'JPG', 'PNG'}
 
 #creates the login information
 class LoginForm(FlaskForm):
@@ -31,11 +33,12 @@ class DestinationForm(FlaskForm):
     #description meets the length requirements
     description = TextAreaField('Description', 
                 validators=[InputRequired()])
-    image = StringField('Cover Image', validators=[InputRequired()])
+    image = FileField('Destination Image', validators=[
+        FileRequired(message="Image can not be empty"),
+        FileAllowed(ALLOWED_FILE, message="Only supports png, jpg, JPG, or PNG file types")])
     currency = StringField('Currency', validators=[InputRequired()])
     submit = SubmitField("Create")
 
-    #this should already be there in the forms.py
   
 class CommentForm(FlaskForm):
     text = TextAreaField('Comment', [InputRequired()])

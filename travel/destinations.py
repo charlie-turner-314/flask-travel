@@ -5,13 +5,24 @@ from flask import (
 )
 
 from flask_login import login_required, current_user
-
+from werkzeug.utils import secure_filename
+import os
 from .models import Destination,Comment
 from .forms import *
 from . import db
 
 #create a blueprint
 bp = Blueprint('destination', __name__, url_prefix='/destinations')
+
+# Check file upload function
+def check_upload_file(form):
+    fp  = form.image.data
+    filename = fp.filename
+    BASE_PATH = os.path.dirname(__file__)
+    upload_path = os.path.join(BASE_PATH, 'static/image', secure_filename(filename))
+    db_upload_path = '/static/image/' + secure_filename(filename)
+    fp.save(upload_path)
+    return db_upload_path
 
 @bp.route('/')
 def destinations():
@@ -29,11 +40,14 @@ def show(id):
 @login_required
 def create():
     form = DestinationForm()
+
     print('Method type: ', request.method)
     if form.validate_on_submit():
+        db_file_path = check_upload_file(form)
+        # Store data
         destination = Destination(name=form.name.data,
                 description=form.description.data,
-                image=form.image.data,
+                image=db_file_path,
                 currency=form.currency.data)
         # add the object to the db session
         db.session.add(destination)
