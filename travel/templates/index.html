@@ -1,0 +1,74 @@
+{% extends 'base.html'%} {% block title %}Home{% endblock %} {% block header %}
+<!--Jumbotron-->
+<div class="container">
+  <div class="row justify-content-center mt-5 pb-4">
+    <div class="col-md-8">
+      <div class="card shadow p-5 mb-5 bg-light">
+        <h1 class="text-center mb-3">Find our best travel deals</h1>
+        <form
+          class="form-inline d-flex flex-nowrap"
+          action="{{url_for('main.search')}}"
+        >
+          <input
+            type="text"
+            name="search"
+            class="form-control flex-grow-1 my-1 mr-sm-2"
+            placeholder="Search for a destination"
+          />
+          <button type="submit" class="flex-shrink-1 btn btn-primary my-1">
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block content %} {% if current_user.is_authenticated == false
+%}
+<div class="row mt-5 mb-5 justify-content-center">
+  <div class="col-md-10">
+    <div class="media border p-3 d-flex justify-content-start">
+      <img
+        class="align-self-center me-3"
+        style="max-width: 120px"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Earth_Western_Hemisphere_transparent_background.png/600px-Earth_Western_Hemisphere_transparent_background.png"
+        alt="Planet Earth"
+      />
+
+      <div class="align-self-center media-body">
+        <h5 class="mt-0">Find the best destinations on earth</h5>
+        <p class="d-none d-sm-block">
+          Sign up to enjoy access to reviewing and booking destinations
+        </p>
+        <a href="/register" class="btn btn-primary">Join Now</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<div class="card-group" id="destinations">
+  {% for destination in destinations %} {# loop through the passed destination
+  list and create a card for each #}
+
+  <div class="card mx-3">
+    <img class="card-img-top" src="{{destination.image}}" />
+    <div class="card-body">
+      <h5 class="card-title">{{ destination.name }}</h5>
+      <a
+        href="{{url_for('destination.show', id=destination.id)}}"
+        class="btn btn-danger"
+        >View Details</a
+      >
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">
+        Last updated {{ ((epoch - destination.updated_at)/(60*60*24))|round|int
+        }} days ago</small
+      >
+    </div>
+  </div>
+
+  {%endfor%}
+</div>
+{% endblock %}

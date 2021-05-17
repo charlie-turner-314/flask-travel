@@ -1,0 +1,76 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="row mt-5 mb-3">
+    <div class="col-md-12">
+      <div class="float-left">
+        <h1 class="mb-0"> {{ destination.name }}</h1>
+        {% if current_user.is_authenticated %}
+        <a href="deletedestination?destination={{destination.id}}">Delete Destination</a>
+        {% endif %}
+        <p>Popular Destination</p>
+      </div>
+
+      <div class="float-right text-right">
+        <p class="mb-0">1 AUD equals</p>
+        <h2 id="exchange-rate"> {{ destination.currency }} </h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Destination -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card my-3">
+        <div class="card-body">
+          <div class="media">
+            <img class="align-self-start mr-3" src="{{destination.image}}" alt="destination image"
+              style="max-width: 250px;">
+            <div class="media-body">
+              <small class="font-weight-bold text-muted">Stay 2 nights</small>
+              <h5 class="mt-0">{{ destination.name }}</h5>
+              <p> {{ destination.description }} </p>
+              <a href="#" class="btn btn-danger">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <hr>
+
+  <!-- Form rendering is simple and easy if using bootstrap -->
+
+
+
+  <hr>
+
+  <!-- Comments -->
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Comments</h1>
+    </div>
+  </div>
+
+   {{ wtf.quick_form(form, "/destinations/{0}/comment".format(destination.id)) }}
+
+  
+
+  <div class="row border-bottom">
+    {% for comment in destination.comments %}
+    <div class="col-md-12">
+      <b>{{ comment.user.name }} <span class="ml-2 text-muted"> {{ comment.created_at.strftime("%d/%m/%Y %H:%M:%S") }} </span> <span>{% if comment.user == current_user %} <a href=>Delete Comment</a> {% endif %}</span></b>
+      <p> {{ comment.text }} </p>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+{% endblock %}
