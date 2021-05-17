@@ -16,6 +16,7 @@ def create_app():
     UPLOAD_FOLDER = '/static/image'
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     # config the db
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///travel_data.sqlite'
     # initialise
     db.init_app(app)

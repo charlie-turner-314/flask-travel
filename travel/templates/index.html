@@ -47,28 +47,28 @@
   </div>
 </div>
 {% endif %}
-<div class="card-group" id="destinations">
+<div class="row destinations">
   {% for destination in destinations %} {# loop through the passed destination
   list and create a card for each #}
-
-  <div class="card mx-3">
-    <img class="card-img-top" src="{{destination.image}}" />
-    <div class="card-body">
-      <h5 class="card-title">{{ destination.name }}</h5>
-      <a
-        href="{{url_for('destination.show', id=destination.id)}}"
-        class="btn btn-danger"
-        >View Details</a
-      >
-    </div>
-    <div class="card-footer">
-      <small class="text-muted">
-        Last updated {{ ((epoch - destination.updated_at)/(60*60*24))|round|int
-        }} days ago</small
-      >
+  <div class="col-md-4">
+    <div class="card">
+      <img class="card-img-top" src="{{destination.image}}" />
+      <div class="card-body">
+        <h5 class="card-title">{{ destination.name }}</h5>
+        <a
+          href="{{url_for('destination.show', id=destination.id)}}"
+          class="btn btn-danger"
+          >View Details</a
+        >
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">
+          Last updated {{ ((epoch -
+          destination.updated_at)/(60*60*24))|round|int }} days ago</small
+        >
+      </div>
     </div>
   </div>
-
   {%endfor%}
 </div>
 {% endblock %}
